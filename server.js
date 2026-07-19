@@ -5,9 +5,12 @@ const mongoose = require("mongoose")
 const methodOverride = require('method-override')
 const morgan = require('morgan')
 const dbc = require("./dbConnection")
-
+const indexController = require("./routes/index.controller")
 
 dbc.dbConnection;
+
+
+app.use("/", indexController)
 
 app.listen(process.env.PORT, async () => {
     try {
