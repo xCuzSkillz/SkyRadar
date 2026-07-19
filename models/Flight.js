@@ -5,6 +5,10 @@ const FlightShcema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Airline"
     },
+    promoCodeId: {
+        type: mongoose.Types.ObjectId,
+        ref: "PromoCode"
+    },
     flightNumber: {
         type: String,
         required: true,
