@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+</head>
+<body>
+<div class="min-h-screen flex">
+  <div class="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 lg:px-24 py-12">
+    <div class="w-full max-w-sm mx-auto">
+      <i class="hgi text-5xl text-[#4d53ff] hgi-stroke hgi-rounded hgi-airplane-01"></i>
+      <h2 class="text-3xl mt-2 font-bold tracking-tight text-[#4d53ff]">Sign in to your account</h2>
+       <p class="mt-2 text-sm text-black">
+        New here?
+        <a href="/auth/sign-up" class="font-semibold transition-all text-zinc-500 underline hover:text-zinc-400">Signup here</a>
+      </p>
+
+    <form class="mt-10 space-y-6" method="post" action="/auth/sign-in">
+       <div>
+        <label for="email" class="block text-sm  font-medium text-black mb-2">Email address</label>
+        <input id="email" placeholder="example@email" name="email" type="email" autocomplete="email"
+          class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+      </div>
+       <div>
+        <label for="password" class="block text-sm font-medium text-black mb-2">Password</label>
+        <input id="password" placeholder="pass123" name="password" type="password"
+          class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+      </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <input id="remember-me" name="remember-me" type="checkbox"
+              class="h-4 w-4 rounded border-slate-600 bg-[#1A1F2E] text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0">
+            <label for="remember-me" class="text-sm text-black">Remember me</label>
+          </div>
+          <!-- <a href="#" class="text-sm font-semibold text-indigo-400 hover:text-indigo-300">Forgot password?</a> -->
+        </div>
+
+        <button type="submit"
+          class="w-full rounded-md bg-indigo-500 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">
+          Sign in
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="hidden lg:block relative w-1/2">
+    <img src="https://i.pinimg.com/control1/736x/f6/83/3e/f6833efd8ee16575cb4f4f3de459e204.jpg"
+         alt="Desk workspace" class="absolute inset-0 h-full w-full object-cover">
+  </div>
+</div>
+</body>
+</html>

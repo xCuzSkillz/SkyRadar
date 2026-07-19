@@ -1,7 +1,14 @@
 const mongoose = require("mongoose")
 
 const UserSchema = new mongoose.Schema({
-    username: {
+    firstName: {
+        type: String,
+        minLength: 2,
+        maxLength: 45,
+        trim: true,
+        required: true
+    },
+    lastName: {
         type: String,
         minLength: 2,
         maxLength: 45,
@@ -18,7 +25,8 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     isAdmin: {
-        type: Boolean
+        type: Boolean,
+        default: false,
     }
 }, {timestamps: true})
 

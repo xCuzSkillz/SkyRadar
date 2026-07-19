@@ -6,11 +6,33 @@ const methodOverride = require('method-override')
 const morgan = require('morgan')
 const dbc = require("./dbConnection")
 const indexController = require("./routes/index.controller")
+const authController = require("./routes/auth.controller")
+const session = require('express-session');
+const {MongoStore} = require("connect-mongo");
 
-dbc.dbConnection;
+app.use(express.urlencoded({ extended: false }))
+app.use(express.static("public"))
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+
+    store: MongoStore.create({
+    mongoUrl: process.env.CONNECTION_STRING,
+    collectionName: "sessions"
+    }),
+
+    cookie: {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 // 1 day
+    }
+  })
+);
 
 app.use("/", indexController)
+app.use("/auth", authController)
 
 app.listen(process.env.PORT, async () => {
     try {
