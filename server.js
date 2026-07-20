@@ -7,6 +7,9 @@ const morgan = require('morgan')
 const dbc = require("./dbConnection")
 const indexController = require("./routes/index.controller")
 const authController = require("./routes/auth.controller")
+const adminController = require("./routes/admin.controller")
+const isAdmin = require("./middlewares/isAdmin")
+const setLocals = require("./middlewares/setLocals")
 const session = require('express-session');
 const {MongoStore} = require("connect-mongo");
 
@@ -31,8 +34,11 @@ app.use(
   })
 );
 
+app.use(setLocals)
+
 app.use("/", indexController)
 app.use("/auth", authController)
+app.use("/admin", isAdmin, adminController)
 
 app.listen(process.env.PORT, async () => {
     try {
