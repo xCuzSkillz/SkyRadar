@@ -2,12 +2,15 @@ const express = require("express");
 const router = express.Router();
 const Flight = require("../models/Flight")
 
-router.post("/airlines-management", async (req, res) => {
+const STATIC_AIRLINE_ID = "0".repeat(22) + "fa"
+const STATIC_PROMOCODE_ID = "0".repeat(20) + "cafe"
+
+router.post("/add", async (req, res) => {
     try {
-        
+
         await Flight.create({
-            airlineId: "FA",
-            promoCodeId: "CODE",
+            airlineId: STATIC_AIRLINE_ID,
+            promoCodeId: STATIC_PROMOCODE_ID,
             flightNumber: req.body.flightNumber,
             origin: req.body.origin,
             destination: req.body.destination,
@@ -19,7 +22,6 @@ router.post("/airlines-management", async (req, res) => {
             totalSeats: req.body.totalSeats,
             seatsAvailable: req.body.seatsAvailable
         })
-
         res.redirect("/admin/flights-management")
     } catch (err) {
         console.log(err)

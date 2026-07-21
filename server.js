@@ -9,6 +9,7 @@ const indexController = require("./routes/index.controller")
 const authController = require("./routes/auth.controller")
 const adminController = require("./routes/admin.controller")
 const airlineManagment = require("./routes/airline.controller")
+const flightsController = require("./routes/flight.controller")
 const isAdmin = require("./middlewares/isAdmin")
 const setLocals = require("./middlewares/setLocals")
 const session = require('express-session');
@@ -43,6 +44,7 @@ app.use("/", indexController)
 app.use("/auth", authController)
 app.use("/admin", isAdmin, adminController)
 app.use("/airline", isAdmin, airlineManagment)
+app.use("/flights", isAdmin, flightsController)
 
 app.listen(process.env.PORT, async () => {
     try {

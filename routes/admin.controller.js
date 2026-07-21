@@ -22,9 +22,9 @@ router.get("/airlines-management-edit/:id", async (req, res) => {
 
 router.get("/flights-management", async (req, res) => {
 
-    const Flights = await Flight.find()
-
-    res.render("admin/flights-management.ejs", {f: Flights})
+    const flights = await Flight.find()
+    const airlines = await Airline.find();
+    res.render("admin/flights-management.ejs", {flights, airlines: airlines})
 })
 
 

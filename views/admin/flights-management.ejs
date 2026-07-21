@@ -12,12 +12,6 @@
 
 <body>
     <%
-        const flights = [
-            { flightNumber: "SR101", airlineName: "SkyRadar Airways", origin: "JFK", destination: "LAX", departureTime: "2026-08-02T08:30", arrivalTime: "2026-08-02T11:45", price: 320, stops: 0, totalSeats: 180, seatsAvailable: 42 },
-            { flightNumber: "SR204", airlineName: "Atlas Air", origin: "ORD", destination: "MIA", departureTime: "2026-08-03T14:15", arrivalTime: "2026-08-03T18:05", price: 210, stops: 1, totalSeats: 150, seatsAvailable: 12 },
-            { flightNumber: "SR330", airlineName: "Nimbus Airlines", origin: "SFO", destination: "SEA", departureTime: "2026-08-04T06:00", arrivalTime: "2026-08-04T08:10", price: 145, stops: 0, totalSeats: 120, seatsAvailable: 0 },
-            { flightNumber: "SR458", airlineName: "Horizon Jet", origin: "DFW", destination: "ATL", departureTime: "2026-08-05T19:20", arrivalTime: "2026-08-05T21:50", price: 260, stops: 0, totalSeats: 160, seatsAvailable: 87 },
-        ];
         const fmt = (iso) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
     %>
         <section class="flex flex-col md:flex-row items-start w-full">
@@ -61,7 +55,7 @@
                 </div>
                 <div class="p-4 sm:p-6">
                     <h2 class="text-2xl font-medium">Flights Managment</h2>
-                    <form action="post" method="/airline" class="mt-5 bg-[#f7f7f7] p-5 rounded-xl">
+                    <form method="post" action="/flights/add" class="mt-5 bg-[#f7f7f7] p-5 rounded-xl">
                         <h4 class="mb-4 font-medium">New Addition</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                             <div class="flex flex-col w-full gap-1">
@@ -72,8 +66,11 @@
                             </div>
                             <div class="flex flex-col w-full gap-1">
                                 <label for="airlineName" class="block text-sm font-medium text-black mb-2">Airline</label>
-                                <input id="airlineName" placeholder="SkyRadar Airways" name="airlineName" type="text"
-                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                                <select class=" w-full h-[39px] rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                                    <% airlines.forEach(e => {  %>
+                                        <option id="<%= e._id  %>"><%= e.name %></option>                                        
+                                   <%  }); %>
+                                </select>
                             </div>
                             <div class="flex flex-col w-full gap-1">
                                 <label for="origin" class="block text-sm font-medium text-black mb-2">Origin</label>
@@ -135,8 +132,6 @@
                                 <p class="text-sm text-black/40">Flights you add above will show up here.</p>
                             </div>
                             <% } else { %>
-
-                                <!-- Desktop / tablet table -->
                                 <div class="hidden md:block p-5 pt-0 overflow-x-auto">
                                     <table class="w-full min-w-[720px] text-left border-collapse">
                                         <thead>
@@ -151,37 +146,37 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% flights.forEach(f=> { %>
+                                            <% flights.forEach(flight=> { %>
                                                 <tr class="border-t border-[#e5e4e4]">
                                                     <td class="py-3 pr-4">
                                                         <p class="font-medium">
-                                                            <%= f.flightNumber %>
+                                                            <%= flight.flightNumber %>
                                                         </p>
-                                                        <p class="text-xs text-black/50">
-                                                            <%= f.airlineName %>
+                                                        <p class="text-xs text-black/50 truncate max-w-[140px]">
+                                                            <%= flight.airlineId %>
                                                         </p>
                                                     </td>
                                                     <td class="py-3 pr-4">
                                                         <p class="font-medium">
-                                                            <%= f.origin %> &rarr; <%= f.destination %>
+                                                            <%= flight.origin %> &rarr; <%= flight.destination %>
                                                         </p>
                                                         <p class="text-xs text-black/50">
-                                                            <%= f.stops===0 ? "Nonstop" : f.stops + " stop" + (f.stops>
+                                                            <%= flight.stops===0 ? "Nonstop" : flight.stops + " stop" + (flight.stops>
                                                                 1 ? "s" : "") %>
                                                         </p>
                                                     </td>
                                                     <td class="py-3 pr-4">
-                                                        <%= fmt(f.departureTime) %>
+                                                        <%= fmt(flight.departureTime) %>
                                                     </td>
                                                     <td class="py-3 pr-4">
-                                                        <%= fmt(f.arrivalTime) %>
+                                                        <%= fmt(flight.arrivalTime) %>
                                                     </td>
                                                     <td class="py-3 pr-4">
                                                         <span
-                                                            class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">BHD <%= f.price %></span>
+                                                            class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">BHD <%= flight.price %></span>
                                                     </td>
                                                     <td class="py-3 pr-4">
-                                                        <%= f.seatsAvailable %> / <%= f.totalSeats %>
+                                                        <%= flight.seatsAvailable %> / <%= flight.totalSeats %>
                                                     </td>
                                                     <td class="py-3">
                                                         <div class="flex items-center justify-end gap-2">
@@ -197,29 +192,29 @@
                                     </table>
                                 </div>
                                 <div class="md:hidden p-5 pt-0 flex flex-col gap-3">
-                                    <% flights.forEach(f=> { %>
+                                    <% flights.forEach(flight=> { %>
                                         <div class="rounded-lg bg-white ring-1 ring-[#e5e4e4] p-4 flex flex-col gap-3">
                                             <div class="flex items-start justify-between gap-3">
                                                 <div>
                                                     <p class="font-medium">
-                                                        <%= f.flightNumber %>
+                                                        <%= flight.flightNumber %>
                                                     </p>
-                                                    <p class="text-xs text-black/50">
-                                                        <%= f.airlineName %>
-                                                    </p>
+                                                    <p class="text-xs text-black/50 truncate max-w-[180px]">
+                                                        <%= flight.airlineId %>
+                                                    </p> 
                                                 </div>
                                                 <span
-                                                    class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">$<%= f.price %></span>
+                                                    class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">BHD <%= flight.price %></span>
                                             </div>
                                             <div class="text-sm">
                                                 <p class="font-medium">
-                                                    <%= f.origin %> &rarr; <%= f.destination %>
+                                                    <%= flight.origin %> &rarr; <%= flight.destination %>
                                                 </p>
                                                 <p class="text-black/50">
-                                                    <%= fmt(f.departureTime) %> &mdash; <%= fmt(f.arrivalTime) %>
+                                                    <%= fmt(flight.departureTime) %> &mdash; <%= fmt(flight.arrivalTime) %>
                                                 </p>
                                                 <p class="text-black/50">
-                                                    <%= f.seatsAvailable %> / <%= f.totalSeats %> seats available
+                                                    <%= flight.seatsAvailable %> / <%= flight.totalSeats %> seats available
                                                 </p>
                                             </div>
                                             <div class="flex items-center gap-2">
