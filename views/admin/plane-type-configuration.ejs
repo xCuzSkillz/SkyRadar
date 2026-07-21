@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+    <script defer src="/scripts/scripts.js"></script>
+    <title>Admin Page</title>
+</head>
+
+<body>
+    <%
+        const CLASS_STYLES = {
+            economy: "bg-blue-100 text-blue-700",
+            business: "bg-purple-100 text-purple-700",
+            first: "bg-amber-100 text-amber-700",
+        };
+        const seatsInPattern = (pattern) => pattern.split("").filter(ch => ch !== " ").length;
+        const computedTotal = planeType.layout.reduce((sum, section) => sum + section.rows * seatsInPattern(section.seatPattern), 0);
+    %>
+        <section class="flex flex-col md:flex-row items-start w-full">
+            <aside
+                class="w-full md:w-[20%] md:min-h-screen p-5 bg-[#fafafa] border-b md:border-b-0 md:border-r border-[#d3d2d2]">
+                <div class="flex items-center gap-3">
+                    <i class="hgi text-5xl text-[#4d53ff] hgi-stroke hgi-rounded hgi-airplane-01"></i>
+                    <h3 class="text-2xl font-bold">SkyRadar Admin</h3>
+                </div>
+                <div class="flex flex-col gap-4 mt-10">
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Airlines</p>
+                        <a href="/admin"
+                            class="mt-3  p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-home-01 text-lg"></i> Overview
+                        </a>
+                        <a href="/admin/airlines-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-02 text-lg"></i> Airlines Management
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Flights</p>
+                        <a href="/admin/flights-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-take-off-01 text-lg"></i> Flights
+                            Management
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Promo Codes</p>
+                        <a href="/admin/promocode-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-coupon-01 text-lg"></i> Promo Codes
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Plane Types</p>
+                        <a href="/admin/plane-types-management"
+                            class="mt-3 bg-white p-3 py-2 font-medium rounded-xl border-2 border-gray-200/80 shadow-sm flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-plane text-lg"></i> Plane Types
+                        </a>
+                    </div>
+            </aside>
+            <div class="min-h-screen w-full md:w-[85%]">
+                <div class="flex flex-wrap gap-3 justify-between items-center border-b border-[#d3d2d2] p-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-black/50 font-medium">Dashboard</span>
+                        <span class="text-black/50 font-medium">/</span>
+                        <span class="text-black/50 font-medium">Plane Types</span>
+                        <span class="text-black/50 font-medium">/</span>
+                        <span class="font-medium">Configuration</span>
+                    </div>
+                    <div class="rounded-full p-2 bg-[#4d53ff] text-white">
+                        <%= user.firstName.trim().charAt(0) %>
+                            <%= user.lastName.trim().charAt(0) %>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6">
+                    <div class="flex items-center gap-2">
+                        <a href="/admin/plane-types-management"><i
+                                class="hgi hgi-stroke hgi-rounded hgi-arrow-left-01"></i></a>
+                        <h2 class="text-2xl font-medium">
+                            <%= planeType.name %> Configuration
+                        </h2>
+                    </div>
+
+                    <form method="post" action="/planetypes/<%= planeType._id %>/layout/add"
+                        class="mt-5 bg-[#f7f7f7] p-5 rounded-xl">
+                        <h4 class="mb-4 font-medium">Add Cabin Section</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="class" class="block text-sm font-medium text-black mb-2">Class</label>
+                                <select name="class" id="class"
+                                    class="w-full h-[39px] rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                                    <option value="economy">Economy</option>
+                                    <option value="business">Business</option>
+                                    <option value="first">First</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="rows" class="block text-sm font-medium text-black mb-2">Rows</label>
+                                <input id="rows" placeholder="20" name="rows" type="number" min="1"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1 sm:col-span-2">
+                                <label for="seatPattern" class="block text-sm font-medium text-black mb-2">Seat
+                                    Pattern</label>
+                                <input id="seatPattern" placeholder="ABC DEF" name="seatPattern" type="text"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                        </div>
+                        <p class="text-xs text-black/40 mt-2">Letters are seats, spaces are aisles. "ABC DEF" = 3
+                            seats, aisle, 3 seats per row.</p>
+                        <div class="mt-5 flex w-full justify-end">
+                            <button type="submit"
+                                class="w-full rounded-md bg-indigo-500 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">
+                                Add Section
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-5 bg-[#f7f7f7] rounded-xl">
+                        <div class="border-b py-5 w-full border-[#d3d2d2] px-5 flex flex-wrap gap-3 justify-between items-center">
+                            <h3 class="text-left font-medium text-lg">Cabin Sections</h3>
+                            <span
+                                class="text-sm <%= computedTotal===(planeType.totalSeats || 0) ? 'text-black/50' : 'text-red-600 font-medium' %>">
+                                <%= computedTotal %> seats configured
+                                    <% if (planeType.totalSeats) { %>
+                                        (<%= planeType.totalSeats %> expected)
+                                        <% } %>
+                            </span>
+                        </div>
+
+                        <% if (planeType.layout.length===0) { %>
+                            <div class="p-10 flex flex-col items-center justify-center text-center gap-2">
+                                <i class="hgi text-4xl text-black/30 hgi-stroke hgi-rounded hgi-plane"></i>
+                                <p class="font-medium text-black/60">No cabin sections yet</p>
+                                <p class="text-sm text-black/40">Add a section above to start building the seat map.
+                                </p>
+                            </div>
+                            <% } else { %>
+                                <div class="p-5 pt-0 flex flex-col gap-3">
+                                    <% planeType.layout.forEach(section=> { %>
+                                        <div
+                                            class="rounded-lg bg-white ring-1 ring-[#e5e4e4] p-4 flex items-center justify-between gap-3">
+                                            <div class="flex items-center gap-3">
+                                                <span
+                                                    class="inline-block rounded-full text-xs font-semibold px-3 py-1 capitalize <%= CLASS_STYLES[section.class] %>">
+                                                    <%= section.class %>
+                                                </span>
+                                                <p class="text-sm text-black/70">
+                                                    <%= section.rows %> rows &middot; "<%= section.seatPattern %>"
+                                                        &middot; <%= seatsInPattern(section.seatPattern) %> seats/row
+                                                </p>
+                                            </div>
+                                            <form method="post"
+                                                action="/planetypes/<%= planeType._id %>/layout/<%= section._id %>?_method=DELETE">
+                                                <button
+                                                    class="rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Remove</button>
+                                            </form>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                                <% } %>
+                    </div>
+
+                    <% if (planeType.layout.length> 0) { %>
+                        <div class="mt-5 bg-[#f7f7f7] rounded-xl p-5">
+                            <h3 class="text-left font-medium text-lg mb-4">Seat Map Preview</h3>
+                            <div class="overflow-x-auto">
+                                <div class="flex flex-col items-center gap-6 min-w-max mx-auto pb-2">
+                                    <% planeType.layout.forEach(section=> { %>
+                                        <div class="flex flex-col items-center gap-2">
+                                            <span
+                                                class="inline-block rounded-full text-xs font-semibold px-3 py-1 capitalize <%= CLASS_STYLES[section.class] %>">
+                                                <%= section.class %>
+                                            </span>
+                                            <% for (let r=1; r <=section.rows; r++) { %>
+                                                <div class="flex items-center gap-1">
+                                                    <span class="w-6 text-xs text-black/40 text-right">
+                                                        <%= r %>
+                                                    </span>
+                                                    <% section.seatPattern.split("").forEach(ch=> { %>
+                                                        <% if (ch===" " ) { %>
+                                                            <span class="w-4"></span>
+                                                            <% } else { %>
+                                                                <span
+                                                                    class="w-7 h-7 flex items-center justify-center rounded text-[10px] font-semibold <%= CLASS_STYLES[section.class] %>">
+                                                                    <%= ch %><%= r %>
+                                                                </span>
+                                                                <% } %>
+                                                                    <% }); %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+            </div>
+        </section>
+</body>
+
+</html>

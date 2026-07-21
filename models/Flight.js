@@ -5,6 +5,10 @@ const FlightShcema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Airline"
     },
+    planeTypeId: {
+        type: mongoose.Types.ObjectId,
+        ref: "PlaneType"
+    },
     promoCodeId: {
         type: mongoose.Types.ObjectId,
         ref: "PromoCode"
@@ -41,12 +45,6 @@ const FlightShcema = new mongoose.Schema({
         required: true,
         min: 10,
         max: 9000
-    },
-    totalSeats: {
-        type: Number
-    },
-    seatsAvailable: {
-        type: Number
     }
 }, {timestamps: true})
 

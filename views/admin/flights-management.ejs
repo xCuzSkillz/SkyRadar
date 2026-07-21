@@ -26,18 +26,33 @@
                         <p class="uppercase text-black/50 font-medium">Airlines</p>
                         <a href="/admin"
                             class="mt-3  p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
-                            <img src="/images/home.svg" alt="overview" /> Overview
+                            <i class="hgi hgi-stroke hgi-rounded hgi-home-01 text-lg"></i> Overview
                         </a>
                         <a href="/admin/airlines-management"
                             class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
-                            <img src="/images/tt5.svg" alt="airlines" /> Airlines Management
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-02 text-lg"></i> Airlines Management
                         </a>
                     </div>
                     <div class="flex flex-col">
                         <p class="uppercase text-black/50 font-medium">Flights</p>
                         <a href="/admin/flights-management"
                             class="mt-3 bg-white p-3 py-2 font-medium rounded-xl border-2 border-gray-200/80 shadow-sm flex items-center gap-2">
-                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-01 text-lg"></i> Flights Management
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-take-off-01 text-lg"></i> Flights
+                            Management
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Promo Codes</p>
+                        <a href="/admin/promocode-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-coupon-01 text-lg"></i> Promo Codes
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Plane Types</p>
+                        <a href="/admin/plane-types-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-plane text-lg"></i> Plane Types
                         </a>
                     </div>
             </aside>
@@ -66,10 +81,22 @@
                             </div>
                             <div class="flex flex-col w-full gap-1">
                                 <label for="airlineName" class="block text-sm font-medium text-black mb-2">Airline</label>
-                                <select class=" w-full h-[39px] rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                                <select name="airlineId" id="" class=" w-full h-[39px] rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
                                     <% airlines.forEach(e => {  %>
-                                        <option id="<%= e._id  %>"><%= e.name %></option>                                        
+                                        <option value="<%= e._id %>" id="<%= e._id  %>"><%= e.name %></option>
                                    <%  }); %>
+                                </select>
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="planeTypeId" class="block text-sm font-medium text-black mb-2">Plane
+                                    Type</label>
+                                <select name="planeTypeId" id="planeTypeId"
+                                    class="w-full h-[39px] rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                                    <% planeTypes.forEach(p=> { %>
+                                        <option value="<%= p._id %>">
+                                            <%= p.name %> (<%= p.totalSeats || 0 %> seats)
+                                        </option>
+                                        <% }); %>
                                 </select>
                             </div>
                             <div class="flex flex-col w-full gap-1">
@@ -104,12 +131,6 @@
                             <div class="flex flex-col w-full gap-1">
                                 <label for="stops" class="block text-sm font-medium text-black mb-2">Stops</label>
                                 <input id="stops" placeholder="0" name="stops" type="number" min="0"
-                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
-                            </div>
-                            <div class="flex flex-col w-full gap-1">
-                                <label for="totalSeats"
-                                    class="block text-sm font-medium text-black mb-2">Total Seats</label>
-                                <input id="totalSeats" placeholder="180" name="totalSeats" type="number" min="0"
                                     class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
                             </div>
                         </div>
@@ -153,8 +174,13 @@
                                                             <%= flight.flightNumber %>
                                                         </p>
                                                         <p class="text-xs text-black/50 truncate max-w-[140px]">
-                                                            <%= flight.airlineId %>
+                                                            <%= flight.airlineId.name %>
                                                         </p>
+                                                        <% if (flight.planeTypeId) { %>
+                                                            <p class="text-xs text-black/40 truncate max-w-[140px]">
+                                                                <%= flight.planeTypeId.name %>
+                                                            </p>
+                                                            <% } %>
                                                     </td>
                                                     <td class="py-3 pr-4">
                                                         <p class="font-medium">
@@ -176,14 +202,17 @@
                                                             class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">BHD <%= flight.price %></span>
                                                     </td>
                                                     <td class="py-3 pr-4">
-                                                        <%= flight.seatsAvailable %> / <%= flight.totalSeats %>
+                                                        <%= flight.planeTypeId ? (flight.planeTypeId.totalSeats || 0) : "-" %>
                                                     </td>
                                                     <td class="py-3">
                                                         <div class="flex items-center justify-end gap-2">
-                                                            <button type="button"
-                                                                class="rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</button>
-                                                            <button type="button"
-                                                                class="rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                            <a href="/admin/flights-management-edit/<%= flight._id %>"
+                                                                class="rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</a>
+                                                            <form method="post"
+                                                                action="/flights/<%= flight._id %>?_method=DELETE">
+                                                                <button
+                                                                    class="rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -200,8 +229,13 @@
                                                         <%= flight.flightNumber %>
                                                     </p>
                                                     <p class="text-xs text-black/50 truncate max-w-[180px]">
-                                                        <%= flight.airlineId %>
-                                                    </p> 
+                                                        <%= flight.airlineId.name %>
+                                                    </p>
+                                                    <% if (flight.planeTypeId) { %>
+                                                        <p class="text-xs text-black/40 truncate max-w-[180px]">
+                                                            <%= flight.planeTypeId.name %>
+                                                        </p>
+                                                        <% } %>
                                                 </div>
                                                 <span
                                                     class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">BHD <%= flight.price %></span>
@@ -214,14 +248,17 @@
                                                     <%= fmt(flight.departureTime) %> &mdash; <%= fmt(flight.arrivalTime) %>
                                                 </p>
                                                 <p class="text-black/50">
-                                                    <%= flight.seatsAvailable %> / <%= flight.totalSeats %> seats available
+                                                    <%= flight.planeTypeId ? (flight.planeTypeId.totalSeats || 0) : "-" %> seats
                                                 </p>
                                             </div>
                                             <div class="flex items-center gap-2">
-                                                <button type="button"
-                                                    class="flex-1 text-center rounded-md bg-gray-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</button>
-                                                <button type="button"
-                                                    class="flex-1 text-center rounded-md bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                <a href="/admin/flights-management-edit/<%= flight._id %>"
+                                                    class="flex-1 text-center rounded-md bg-gray-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</a>
+                                                <form method="post" action="/flights/<%= flight._id %>?_method=DELETE"
+                                                    class="flex-1">
+                                                    <button
+                                                        class="w-full rounded-md bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                </form>
                                             </div>
                                         </div>
                                         <% }); %>

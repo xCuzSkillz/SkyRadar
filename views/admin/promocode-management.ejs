@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+    <script defer src="/scripts/scripts.js"></script>
+    <title>Admin Page</title>
+</head>
+
+<body>
+    <%
+        const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : "No expiry";
+    %>
+        <section class="flex flex-col md:flex-row items-start w-full">
+            <aside
+                class="w-full md:w-[20%] md:min-h-screen p-5 bg-[#fafafa] border-b md:border-b-0 md:border-r border-[#d3d2d2]">
+                <div class="flex items-center gap-3">
+                    <i class="hgi text-5xl text-[#4d53ff] hgi-stroke hgi-rounded hgi-airplane-01"></i>
+                    <h3 class="text-2xl font-bold">SkyRadar Admin</h3>
+                </div>
+                <div class="flex flex-col gap-4 mt-10">
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Airlines</p>
+                        <a href="/admin"
+                            class="mt-3  p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-home-01 text-lg"></i> Overview
+                        </a>
+                        <a href="/admin/airlines-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-02 text-lg"></i> Airlines Management
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Flights</p>
+                        <a href="/admin/flights-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-take-off-01 text-lg"></i> Flights
+                            Management
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Promo Codes</p>
+                        <a href="/admin/promocode-management"
+                            class="mt-3 bg-white p-3 py-2 font-medium rounded-xl border-2 border-gray-200/80 shadow-sm flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-coupon-01 text-lg"></i> Promo Codes
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Plane Types</p>
+                        <a href="/admin/plane-types-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-plane text-lg"></i> Plane Types
+                        </a>
+                    </div>
+            </aside>
+            <div class="min-h-screen w-full md:w-[85%]">
+                <div class="flex flex-wrap gap-3 justify-between items-center border-b border-[#d3d2d2] p-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-black/50 font-medium">Dashboard</span>
+                        <span class="text-black/50 font-medium">/</span>
+                        <span class="font-medium">Promo Codes</span>
+                    </div>
+                    <div class="rounded-full p-2 bg-[#4d53ff] text-white">
+                        <%= user.firstName.trim().charAt(0) %>
+                            <%= user.lastName.trim().charAt(0) %>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6">
+                    <h2 class="text-2xl font-medium">Promo Codes Managment</h2>
+                    <form method="post" action="/promocode/add" class="mt-5 bg-[#f7f7f7] p-5 rounded-xl">
+                        <h4 class="mb-4 font-medium">New Addition</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="code" class="block text-sm font-medium text-black mb-2">Code</label>
+                                <input id="code" placeholder="SUMMER25" name="code" type="text"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="discountPercent"
+                                    class="block text-sm font-medium text-black mb-2">Discount %</label>
+                                <input id="discountPercent" placeholder="25" name="discountPercent" type="number"
+                                    min="0" max="100"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="expiryDate"
+                                    class="block text-sm font-medium text-black mb-2">Expiry Date</label>
+                                <input id="expiryDate" name="expiryDate" type="date"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="usageLimit"
+                                    class="block text-sm font-medium text-black mb-2">Usage Limit</label>
+                                <input id="usageLimit" placeholder="100" name="usageLimit" type="number" min="0"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                        </div>
+                        <div class="mt-5 flex w-full justify-end">
+                            <button type="submit"
+                                class="w-full rounded-md bg-indigo-500 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">
+                                Add New
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-5 bg-[#f7f7f7] rounded-xl">
+                        <div class="border-b py-5 w-full border-[#d3d2d2] px-5">
+                            <h3 class="text-left font-medium text-lg">Promo Codes List</h3>
+                        </div>
+
+                        <% if (promocodes.length===0) { %>
+                            <div class="p-10 flex flex-col items-center justify-center text-center gap-2">
+                                <i class="hgi text-4xl text-black/30 hgi-stroke hgi-rounded hgi-coupon-01"></i>
+                                <p class="font-medium text-black/60">No promo codes yet</p>
+                                <p class="text-sm text-black/40">Promo codes you add above will show up here.</p>
+                            </div>
+                            <% } else { %>
+                                <div class="hidden md:block p-5 pt-0 overflow-x-auto">
+                                    <table class="w-full min-w-[560px] text-left border-collapse">
+                                        <thead>
+                                            <tr class="text-xs uppercase text-black/50">
+                                                <th class="py-3 font-medium">Code</th>
+                                                <th class="py-3 font-medium">Discount</th>
+                                                <th class="py-3 font-medium">Expiry</th>
+                                                <th class="py-3 font-medium">Usage</th>
+                                                <th class="py-3 font-medium text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% promocodes.forEach(promo=> { %>
+                                                <tr class="border-t border-[#e5e4e4]">
+                                                    <td class="py-3 pr-4">
+                                                        <p class="font-medium">
+                                                            <%= promo.code %>
+                                                        </p>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <span
+                                                            class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1"><%= promo.discountPercent || 0 %>%</span>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <%= fmtDate(promo.expiryDate) %>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <%= promo.timesUsed || 0 %> / <%= promo.usageLimit ?? "&#8734;" %>
+                                                    </td>
+                                                    <td class="py-3">
+                                                        <div class="flex items-center justify-end gap-2">
+                                                            <a href="/admin/promocode-management-edit/<%= promo._id %>"
+                                                                class="rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</a>
+                                                            <form method="post"
+                                                                action="/promocode/<%= promo._id %>?_method=DELETE">
+                                                                <button
+                                                                    class="rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="md:hidden p-5 pt-0 flex flex-col gap-3">
+                                    <% promocodes.forEach(promo=> { %>
+                                        <div class="rounded-lg bg-white ring-1 ring-[#e5e4e4] p-4 flex flex-col gap-3">
+                                            <div class="flex items-start justify-between gap-3">
+                                                <p class="font-medium">
+                                                    <%= promo.code %>
+                                                </p>
+                                                <span
+                                                    class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1"><%= promo.discountPercent || 0 %>%</span>
+                                            </div>
+                                            <div class="text-sm">
+                                                <p class="text-black/50">Expires <%= fmtDate(promo.expiryDate) %>
+                                                </p>
+                                                <p class="text-black/50">
+                                                    <%= promo.timesUsed || 0 %> / <%= promo.usageLimit ?? "&#8734;" %> used
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <a href="/admin/promocode-management-edit/<%= promo._id %>"
+                                                    class="flex-1 text-center rounded-md bg-gray-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</a>
+                                                <form method="post"
+                                                    action="/promocode/<%= promo._id %>?_method=DELETE"
+                                                    class="flex-1">
+                                                    <button
+                                                        class="w-full rounded-md bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+</body>
+
+</html>
