@@ -16,6 +16,8 @@ const {MongoStore} = require("connect-mongo");
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static("public"))
+app.use(methodOverride('_method'))
+app.use(morgan('dev'))
 
 app.use(
   session({

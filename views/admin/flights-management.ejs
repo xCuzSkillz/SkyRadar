@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+    <script defer src="/scripts/scripts.js"></script>
+    <title>Admin Page</title>
+</head>
+
+<body>
+    <%
+        const flights = [
+            { flightNumber: "SR101", airlineName: "SkyRadar Airways", origin: "JFK", destination: "LAX", departureTime: "2026-08-02T08:30", arrivalTime: "2026-08-02T11:45", price: 320, stops: 0, totalSeats: 180, seatsAvailable: 42 },
+            { flightNumber: "SR204", airlineName: "Atlas Air", origin: "ORD", destination: "MIA", departureTime: "2026-08-03T14:15", arrivalTime: "2026-08-03T18:05", price: 210, stops: 1, totalSeats: 150, seatsAvailable: 12 },
+            { flightNumber: "SR330", airlineName: "Nimbus Airlines", origin: "SFO", destination: "SEA", departureTime: "2026-08-04T06:00", arrivalTime: "2026-08-04T08:10", price: 145, stops: 0, totalSeats: 120, seatsAvailable: 0 },
+            { flightNumber: "SR458", airlineName: "Horizon Jet", origin: "DFW", destination: "ATL", departureTime: "2026-08-05T19:20", arrivalTime: "2026-08-05T21:50", price: 260, stops: 0, totalSeats: 160, seatsAvailable: 87 },
+        ];
+        const fmt = (iso) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    %>
+        <section class="flex flex-col md:flex-row items-start w-full">
+            <aside
+                class="w-full md:w-[20%] md:min-h-screen p-5 bg-[#fafafa] border-b md:border-b-0 md:border-r border-[#d3d2d2]">
+                <div class="flex items-center gap-3">
+                    <i class="hgi text-5xl text-[#4d53ff] hgi-stroke hgi-rounded hgi-airplane-01"></i>
+                    <h3 class="text-2xl font-bold">SkyRadar Admin</h3>
+                </div>
+                <div class="flex flex-col gap-4 mt-10">
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Airlines</p>
+                        <a href="/admin"
+                            class="mt-3  p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <img src="/images/home.svg" alt="overview" /> Overview
+                        </a>
+                        <a href="/admin/airlines-management"
+                            class="mt-3 p-3 py-2 font-medium rounded-xl border-2 border-transparent flex items-center gap-2">
+                            <img src="/images/tt5.svg" alt="airlines" /> Airlines Management
+                        </a>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="uppercase text-black/50 font-medium">Flights</p>
+                        <a href="/admin/flights-management"
+                            class="mt-3 bg-white p-3 py-2 font-medium rounded-xl border-2 border-gray-200/80 shadow-sm flex items-center gap-2">
+                            <i class="hgi hgi-stroke hgi-rounded hgi-airplane-01 text-lg"></i> Flights Management
+                        </a>
+                    </div>
+            </aside>
+            <div class="min-h-screen w-full md:w-[85%]">
+                <div class="flex flex-wrap gap-3 justify-between items-center border-b border-[#d3d2d2] p-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-black/50 font-medium">Dashboard</span>
+                        <span class="text-black/50 font-medium">/</span>
+                        <span class="font-medium">Flights Management</span>
+                    </div>
+                    <div class="rounded-full p-2 bg-[#4d53ff] text-white">
+                        <%= user.firstName.trim().charAt(0) %>
+                            <%= user.lastName.trim().charAt(0) %>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6">
+                    <h2 class="text-2xl font-medium">Flights Managment</h2>
+                    <form action="post" method="/airline" class="mt-5 bg-[#f7f7f7] p-5 rounded-xl">
+                        <h4 class="mb-4 font-medium">New Addition</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="flightNumber"
+                                    class="block text-sm font-medium text-black mb-2">Flight Number</label>
+                                <input id="flightNumber" placeholder="SR101" name="flightNumber" type="text"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="airlineName" class="block text-sm font-medium text-black mb-2">Airline</label>
+                                <input id="airlineName" placeholder="SkyRadar Airways" name="airlineName" type="text"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="origin" class="block text-sm font-medium text-black mb-2">Origin</label>
+                                <input id="origin" placeholder="JFK" name="origin" type="text"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="destination"
+                                    class="block text-sm font-medium text-black mb-2">Destination</label>
+                                <input id="destination" placeholder="LAX" name="destination" type="text"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="departureTime"
+                                    class="block text-sm font-medium text-black mb-2">Departure</label>
+                                <input id="departureTime" name="departureTime" type="datetime-local"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="arrivalTime"
+                                    class="block text-sm font-medium text-black mb-2">Arrival</label>
+                                <input id="arrivalTime" name="arrivalTime" type="datetime-local"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="price" class="block text-sm font-medium text-black mb-2">Price
+                                    (BHD)</label>
+                                <input id="price" placeholder="320" name="price" type="number" min="10" max="9000"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="stops" class="block text-sm font-medium text-black mb-2">Stops</label>
+                                <input id="stops" placeholder="0" name="stops" type="number" min="0"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="totalSeats"
+                                    class="block text-sm font-medium text-black mb-2">Total Seats</label>
+                                <input id="totalSeats" placeholder="180" name="totalSeats" type="number" min="0"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                        </div>
+                        <div class="mt-5 flex w-full justify-end">
+                            <button type="submit"
+                                class="w-full rounded-md bg-indigo-500 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">
+                                Add New
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-5 bg-[#f7f7f7] rounded-xl">
+                        <div class="border-b py-5 w-full border-[#d3d2d2] px-5">
+                            <h3 class="text-left font-medium text-lg">Flights List</h3>
+                        </div>
+
+                        <% if (flights.length===0) { %>
+                            <div class="p-10 flex flex-col items-center justify-center text-center gap-2">
+                                <i class="hgi text-4xl text-black/30 hgi-stroke hgi-rounded hgi-airplane-01"></i>
+                                <p class="font-medium text-black/60">No flights yet</p>
+                                <p class="text-sm text-black/40">Flights you add above will show up here.</p>
+                            </div>
+                            <% } else { %>
+
+                                <!-- Desktop / tablet table -->
+                                <div class="hidden md:block p-5 pt-0 overflow-x-auto">
+                                    <table class="w-full min-w-[720px] text-left border-collapse">
+                                        <thead>
+                                            <tr class="text-xs uppercase text-black/50">
+                                                <th class="py-3 font-medium">Flight</th>
+                                                <th class="py-3 font-medium">Route</th>
+                                                <th class="py-3 font-medium">Departure</th>
+                                                <th class="py-3 font-medium">Arrival</th>
+                                                <th class="py-3 font-medium">Price</th>
+                                                <th class="py-3 font-medium">Seats</th>
+                                                <th class="py-3 font-medium text-right">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% flights.forEach(f=> { %>
+                                                <tr class="border-t border-[#e5e4e4]">
+                                                    <td class="py-3 pr-4">
+                                                        <p class="font-medium">
+                                                            <%= f.flightNumber %>
+                                                        </p>
+                                                        <p class="text-xs text-black/50">
+                                                            <%= f.airlineName %>
+                                                        </p>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <p class="font-medium">
+                                                            <%= f.origin %> &rarr; <%= f.destination %>
+                                                        </p>
+                                                        <p class="text-xs text-black/50">
+                                                            <%= f.stops===0 ? "Nonstop" : f.stops + " stop" + (f.stops>
+                                                                1 ? "s" : "") %>
+                                                        </p>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <%= fmt(f.departureTime) %>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <%= fmt(f.arrivalTime) %>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <span
+                                                            class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">BHD <%= f.price %></span>
+                                                    </td>
+                                                    <td class="py-3 pr-4">
+                                                        <%= f.seatsAvailable %> / <%= f.totalSeats %>
+                                                    </td>
+                                                    <td class="py-3">
+                                                        <div class="flex items-center justify-end gap-2">
+                                                            <button type="button"
+                                                                class="rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</button>
+                                                            <button type="button"
+                                                                class="rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="md:hidden p-5 pt-0 flex flex-col gap-3">
+                                    <% flights.forEach(f=> { %>
+                                        <div class="rounded-lg bg-white ring-1 ring-[#e5e4e4] p-4 flex flex-col gap-3">
+                                            <div class="flex items-start justify-between gap-3">
+                                                <div>
+                                                    <p class="font-medium">
+                                                        <%= f.flightNumber %>
+                                                    </p>
+                                                    <p class="text-xs text-black/50">
+                                                        <%= f.airlineName %>
+                                                    </p>
+                                                </div>
+                                                <span
+                                                    class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">$<%= f.price %></span>
+                                            </div>
+                                            <div class="text-sm">
+                                                <p class="font-medium">
+                                                    <%= f.origin %> &rarr; <%= f.destination %>
+                                                </p>
+                                                <p class="text-black/50">
+                                                    <%= fmt(f.departureTime) %> &mdash; <%= fmt(f.arrivalTime) %>
+                                                </p>
+                                                <p class="text-black/50">
+                                                    <%= f.seatsAvailable %> / <%= f.totalSeats %> seats available
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <button type="button"
+                                                    class="flex-1 text-center rounded-md bg-gray-400 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Edit</button>
+                                                <button type="button"
+                                                    class="flex-1 text-center rounded-md bg-red-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-[#0B0F1A] transition-colors">Delete</button>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+</body>
+
+</html>
