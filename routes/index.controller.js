@@ -38,22 +38,22 @@ router.get('/booking/payment/:bookingId', isLoggedIn, async (req,res)=>{
         return res.redirect("/")
     }
 
-    const paymentUrl = `${PAYMENT_BASE_URL}/${booking.totalPrice}/skyrada/${booking.userId}/${booking.flightId._id}`
+    const paymentUrl = `${PAYMENT_BASE_URL}/${booking.totalPrice}/skyradar/${booking.userId}/${booking.flightId._id}`
 
     res.render('booking-payment.ejs', { booking, paymentUrl })
 })
 
-router.get('/booking/success/:userId/:bookingId', isLoggedIn, async (req,res)=>{
-    const { userId, bookingId } = req.params
+router.get('/booking/success/:userId/:flightId', isLoggedIn, async (req,res)=>{
+    const { userId, flightId } = req.params
 
     if (userId !== req.session.user._id.toString()) {
         return res.redirect("/")
     }
 
     const booking = await Booking.findOneAndUpdate(
-        { _id: bookingId, userId },
+        { userId, flightId, status: "pending" },
         { status: "confirmed" },
-        { new: true }
+        { new: true, sort: { createdAt: -1 } }
     ).populate({ path: "flightId", populate: [{ path: "airlineId" }, { path: "planeTypeId" }] })
 
     if (!booking) {
