@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+    <title>Booking</title>
+</head>
+<body>
+<div class="w-full bg-[#003b95] pb-32 flex justify-center items-center">
+    <div class="w-[75%] flex flex-col gap-[3rem] ">
+       <%- include("./partials/navbar.ejs")%>
+       <div>
+         <h1 class="text-4xl text-center text-white font-bold">Review your flight</h1>
+       </div>
+    </div>
+   </div>
+
+   <div class="w-full bg-white flex justify-center pb-24">
+    <div class="w-[75%] -mt-16 relative z-10">
+        <%
+            const fmt = (iso) => new Date(iso).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+            const CLASS_LABELS = { economy: "Economy", business: "Business", first: "First" };
+            const CLASS_PRICE_FIELD = { economy: "economyPrice", business: "businessPrice", first: "firstPrice" };
+            const price = flights[CLASS_PRICE_FIELD[type]];
+        %>
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <div class="flex items-center gap-3">
+                    <% if (flights.airlineId && flights.airlineId.logo) { %>
+                        <img src="<%= flights.airlineId.logo %>"
+                            class="w-12 h-12 rounded-full object-cover ring-1 ring-gray-200" />
+                        <% } %>
+                            <div>
+                                <p class="font-semibold text-black text-lg">
+                                    <%= flights.airlineId ? flights.airlineId.name : "Unknown Airline" %>
+                                </p>
+                                <p class="text-sm text-black/50">
+                                    <%= flights.flightNumber %>
+                                        <% if (flights.planeTypeId) { %>
+                                            &middot; <%= flights.planeTypeId.name %>
+                                                <% } %>
+                                </p>
+                            </div>
+                </div>
+                <span
+                    class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-sm font-semibold px-4 py-1.5">
+                    <%= CLASS_LABELS[type] %> Class
+                </span>
+            </div>
+
+            <div class="mt-8 flex items-center justify-between gap-4">
+                <div>
+                    <p class="text-2xl font-bold text-black">
+                        <%= fmt(flights.departureTime) %>
+                    </p>
+                    <p class="text-sm text-black/50">
+                        <%= flights.origin %>
+                    </p>
+                </div>
+                <div class="flex-1 flex flex-col items-center px-4">
+                    <div class="w-full flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-gray-300 shrink-0"></span>
+                        <span class="flex-1 border-t border-dashed border-gray-300"></span>
+                        <i class="hgi hgi-stroke hgi-rounded hgi-airplane-01 text-black/40"></i>
+                        <span class="flex-1 border-t border-dashed border-gray-300"></span>
+                        <span class="w-2 h-2 rounded-full bg-gray-300 shrink-0"></span>
+                    </div>
+                    <p class="text-xs text-black/50 mt-1">
+                        <%= flights.stops===0 ? "Nonstop" : flights.stops + " stop" + (flights.stops> 1 ? "s" : "")
+                            %>
+                    </p>
+                </div>
+                <div class="text-right">
+                    <p class="text-2xl font-bold text-black">
+                        <%= fmt(flights.arrivalTime) %>
+                    </p>
+                    <p class="text-sm text-black/50">
+                        <%= flights.destination %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between flex-wrap gap-4">
+                <div>
+                    <p class="text-sm text-black/50">Total price</p>
+                    <p class="text-3xl font-bold text-black">BHD <%= price %>
+                    </p>
+                </div>
+                <a href="/booking/<%= type %>/<%= flights._id %>/passengers"
+                    class="bg-[#4d53ff] hover:bg-[#3d43e0] transition-colors text-white font-semibold px-8 py-3.5 rounded-lg">
+                    Continue to Passenger Details
+                </a>
+            </div>
+        </div>
+    </div>
+   </div>
+</body>
+</html>

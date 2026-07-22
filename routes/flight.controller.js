@@ -17,7 +17,9 @@ router.post("/add", async (req, res) => {
             arrivalTime: req.body.arrivalTime,
             duration: req.body.duration,
             stops: req.body.stops,
-            price: req.body.price,
+            economyPrice: req.body.economyPrice,
+            businessPrice: req.body.businessPrice,
+            firstPrice: req.body.firstPrice,
         })
         res.redirect("/admin/flights-management")
     } catch (err) {

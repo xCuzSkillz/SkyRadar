@@ -40,9 +40,18 @@ const FlightShcema = new mongoose.Schema({
     stops: {
         type: Number
     },
-    price: {
+    economyPrice: {
         type: Number,
-        required: true,
+        min: 10,
+        max: 9000
+    },
+    businessPrice: {
+        type: Number,
+        min: 10,
+        max: 9000
+    },
+    firstPrice: {
+        type: Number,
         min: 10,
         max: 9000
     }

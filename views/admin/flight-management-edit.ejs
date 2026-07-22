@@ -146,16 +146,30 @@
                                     class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
                             </div>
                             <div class="flex flex-col w-full gap-1">
-                                <label for="price" class="block text-sm font-medium text-black mb-2">Price
-                                    (BHD)</label>
-                                <input id="price" value="<%= flight.price %>" placeholder="320" name="price"
-                                    type="number" min="10" max="9000"
-                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
-                            </div>
-                            <div class="flex flex-col w-full gap-1">
                                 <label for="stops" class="block text-sm font-medium text-black mb-2">Stops</label>
                                 <input id="stops" value="<%= flight.stops %>" placeholder="0" name="stops"
                                     type="number" min="0"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="economyPrice" class="block text-sm font-medium text-black mb-2">Economy
+                                    Price (BHD)</label>
+                                <input id="economyPrice" value="<%= flight.economyPrice %>" placeholder="178"
+                                    name="economyPrice" type="number" min="10" max="9000"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="businessPrice" class="block text-sm font-medium text-black mb-2">Business
+                                    Price (BHD)</label>
+                                <input id="businessPrice" value="<%= flight.businessPrice %>" placeholder="573"
+                                    name="businessPrice" type="number" min="10" max="9000"
+                                    class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            </div>
+                            <div class="flex flex-col w-full gap-1">
+                                <label for="firstPrice" class="block text-sm font-medium text-black mb-2">First
+                                    Price (BHD)</label>
+                                <input id="firstPrice" value="<%= flight.firstPrice %>" placeholder="1494"
+                                    name="firstPrice" type="number" min="10" max="9000"
                                     class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
                             </div>
                         </div>

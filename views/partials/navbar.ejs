@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<nav class="p-7 w-full bg-transparent flex justify-between">
+   <div class="flex items-center gap-3">
+        <i class="hgi text-5xl text-white hgi-stroke hgi-rounded hgi-airplane-01"></i>
+        <h3 class="text-2xl font-bold text-white">SkyRadar Admin</h3>
+    </div>
+    <div class="flex items-center gap-3">
+       <a href="/bookings" class="font-medium text-lg text-white transition-all hover:bg-white/10 py-3 rounded-md px-5">List your Bookings</a>
+        <div class="flex items-center gap-3">
+            <img width="50" class="rounded-full" height="50" src="https://i.pinimg.com/736x/4a/3d/1d/4a3d1d04e05f967bccdb3eb1cfc3de18.jpg" />
+            <div class="flex flex-col text-white items-start gap-1">
+               <div class="flex font-medium items-center gap-1">
+                    <p><%= user.firstName  %></p>
+                    <p><%= user.lastName  %></p>
+               </div>
+               <p class="text-sm text-amber-500">Genesus Rewards</p>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+    <title>Passenger Details</title>
+</head>
+<body>
+<div class="w-full bg-[#003b95] pb-32 flex justify-center items-center">
+    <div class="w-[75%] flex flex-col gap-[3rem] ">
+       <%- include("./partials/navbar.ejs")%>
+       <div>
+         <h1 class="text-4xl text-center text-white font-bold">Passenger Details</h1>
+       </div>
+    </div>
+   </div>
+
+   <div class="w-full bg-white flex justify-center pb-24">
+    <div class="w-[75%] -mt-16 relative z-10">
+        <%
+            const CLASS_LABELS = { economy: "Economy", business: "Business", first: "First" };
+            const CLASS_PRICE_FIELD = { economy: "economyPrice", business: "businessPrice", first: "firstPrice" };
+            const price = flights[CLASS_PRICE_FIELD[type]];
+        %>
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+            <div class="flex items-center justify-between flex-wrap gap-3 pb-6 border-b border-gray-200 mb-6">
+                <div class="flex items-center gap-3">
+                    <% if (flights.airlineId && flights.airlineId.logo) { %>
+                        <img src="<%= flights.airlineId.logo %>"
+                            class="w-10 h-10 rounded-full object-cover ring-1 ring-gray-200" />
+                        <% } %>
+                            <div>
+                                <p class="font-semibold text-black">
+                                    <%= flights.airlineId ? flights.airlineId.name : "Unknown Airline" %>
+                                        <%= flights.flightNumber %>
+                                </p>
+                                <p class="text-sm text-black/50">
+                                    <%= flights.origin %> &rarr; <%= flights.destination %>
+                                </p>
+                            </div>
+                </div>
+                <div class="text-right">
+                    <span
+                        class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">
+                        <%= CLASS_LABELS[type] %>
+                    </span>
+                    <p class="text-lg font-bold text-black mt-1">BHD <%= price %>
+                    </p>
+                </div>
+            </div>
+
+            <form method="post" action="/booking/<%= type %>/<%= flights._id %>/passengers">
+                <h4 class="font-medium text-black mb-4">Passenger Details</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-1">
+                        <label for="fullName" class="text-sm font-medium text-black">Full Name</label>
+                        <input id="fullName" name="fullName" type="text" placeholder="John Smith" required
+                            class="rounded-md bg-[#fafafa] ring-2 ring-[#e9e8e8] focus:ring-[#4d53ff] px-3 py-2.5 outline-none">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label for="age" class="text-sm font-medium text-black">Age</label>
+                        <input id="age" name="age" type="number" min="0" placeholder="30"
+                            class="rounded-md bg-[#fafafa] ring-2 ring-[#e9e8e8] focus:ring-[#4d53ff] px-3 py-2.5 outline-none">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label for="passportNumber" class="text-sm font-medium text-black">Passport Number</label>
+                        <input id="passportNumber" name="passportNumber" type="text" placeholder="N1234567" required
+                            class="rounded-md bg-[#fafafa] ring-2 ring-[#e9e8e8] focus:ring-[#4d53ff] px-3 py-2.5 outline-none">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end">
+                    <button type="submit"
+                        class="bg-[#4d53ff] hover:bg-[#3d43e0] transition-colors text-white font-semibold px-8 py-3.5 rounded-lg">
+                        Complete Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+   </div>
+</body>
+</html>
