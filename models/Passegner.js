@@ -5,10 +5,6 @@ const PassengerSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "Booking"
     },
-    seatId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Seat"
-    },
     fullName: {
         type: String,
         required: true,

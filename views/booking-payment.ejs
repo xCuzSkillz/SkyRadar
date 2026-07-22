@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://use.hugeicons.com/font/icons.css" />
+    <title>Payment</title>
+</head>
+<body>
+<div class="w-full bg-[#003b95] pb-32 flex justify-center items-center">
+    <div class="w-[75%] flex flex-col gap-[3rem] ">
+       <%- include("./partials/navbar.ejs")%>
+       <div>
+         <h1 class="text-4xl text-center text-white font-bold">Complete your payment</h1>
+       </div>
+    </div>
+   </div>
+
+   <div class="w-full bg-white flex justify-center pb-24">
+    <div class="w-[75%] -mt-16 relative z-10">
+        <%
+            const flight = booking.flightId;
+            const fmt = (iso) => new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+            const CLASS_LABELS = { economy: "Economy", business: "Business", first: "First" };
+        %>
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+            <div class="flex items-center justify-between flex-wrap gap-3 pb-6 border-b border-gray-200 mb-6">
+                <div class="flex items-center gap-3">
+                    <% if (flight && flight.airlineId && flight.airlineId.logo) { %>
+                        <img src="<%= flight.airlineId.logo %>"
+                            class="w-10 h-10 rounded-full object-cover ring-1 ring-gray-200" />
+                        <% } %>
+                            <div>
+                                <p class="font-semibold text-black">
+                                    <%= flight && flight.airlineId ? flight.airlineId.name : "Unknown Airline" %>
+                                        <%= flight ? flight.flightNumber : "" %>
+                                </p>
+                                <% if (flight) { %>
+                                    <p class="text-sm text-black/50">
+                                        <%= flight.origin %> &rarr; <%= flight.destination %> &middot; <%=
+                                            fmt(flight.departureTime) %>
+                                    </p>
+                                    <% } %>
+                            </div>
+                </div>
+                <span class="inline-block rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold px-3 py-1 capitalize">
+                    <%= booking.status %>
+                </span>
+            </div>
+
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div>
+                    <span class="inline-block rounded-full bg-[#e9e8ff] text-[#4d53ff] text-xs font-semibold px-3 py-1">
+                        <%= CLASS_LABELS[booking.tripType] || booking.tripType %>
+                    </span>
+                    <p class="text-sm text-black/50 mt-2">Total price</p>
+                    <p class="text-3xl font-bold text-black">BHD <%= booking.totalPrice %>
+                    </p>
+                </div>
+                <a href="<%= paymentUrl %>"
+                    class="bg-[#4d53ff] hover:bg-[#3d43e0] transition-colors text-white font-semibold px-8 py-3.5 rounded-lg">
+                    Go to Payment
+                </a>
+            </div>
+        </div>
+    </div>
+   </div>
+</body>
+</html>

@@ -11,9 +11,56 @@ const CLASS_PRICE_FIELD = {
     first: "firstPrice",
 }
 
+const PAYMENT_BASE_URL = "https://pocketpay-ercr.onrender.com/pay"
+
 router.get('/', isLoggedIn, async (req,res)=>{
-    const flights = await Flight.find().populate("airlineId").populate("planeTypeId").sort({ departureTime: 1 })
-    res.render('homepage.ejs', { flights })
+    const { origin, destination, departDate } = req.query
+
+    const filter = {}
+    if (origin) filter.origin = { $regex: origin, $options: "i" }
+    if (destination) filter.destination = { $regex: destination, $options: "i" }
+    if (departDate) {
+        const start = new Date(departDate + "T00:00:00")
+        const end = new Date(departDate + "T23:59:59")
+        filter.departureTime = { $gte: start, $lte: end }
+    }
+
+    const flights = await Flight.find(filter).populate("airlineId").populate("planeTypeId").sort({ departureTime: 1 })
+    res.render('homepage.ejs', { flights, query: { origin, destination, departDate } })
+})
+
+router.get('/booking/payment/:bookingId', isLoggedIn, async (req,res)=>{
+    const { bookingId } = req.params
+
+    const booking = await Booking.findOne({ _id: bookingId, userId: req.session.user._id })
+        .populate({ path: "flightId", populate: [{ path: "airlineId" }, { path: "planeTypeId" }] })
+    if (!booking) {
+        return res.redirect("/")
+    }
+
+    const paymentUrl = `${PAYMENT_BASE_URL}/${booking.totalPrice}/skyrada/${booking.userId}/${booking.flightId._id}`
+
+    res.render('booking-payment.ejs', { booking, paymentUrl })
+})
+
+router.get('/booking/success/:userId/:bookingId', isLoggedIn, async (req,res)=>{
+    const { userId, bookingId } = req.params
+
+    if (userId !== req.session.user._id.toString()) {
+        return res.redirect("/")
+    }
+
+    const booking = await Booking.findOneAndUpdate(
+        { _id: bookingId, userId },
+        { status: "confirmed" },
+        { new: true }
+    ).populate({ path: "flightId", populate: [{ path: "airlineId" }, { path: "planeTypeId" }] })
+
+    if (!booking) {
+        return res.redirect("/")
+    }
+
+    res.render('booking-success.ejs', { booking })
 })
 
 router.get('/booking/:type/:id', isLoggedIn, async (req,res)=>{
@@ -56,7 +103,7 @@ router.post('/booking/:type/:id/passengers', isLoggedIn, async (req,res)=>{
             tripId: crypto.randomUUID(),
             tripType: type,
             totalPrice: flight[priceField],
-            status: "confirmed",
+            status: "pending",
             bookedAt: new Date(),
         })
 
@@ -67,7 +114,7 @@ router.post('/booking/:type/:id/passengers', isLoggedIn, async (req,res)=>{
             passportNumber: req.body.passportNumber,
         })
 
-        res.redirect("/bookings")
+        res.redirect(`/booking/payment/${booking._id}`)
     } catch (err) {
         console.log(err)
         res.redirect("/")
