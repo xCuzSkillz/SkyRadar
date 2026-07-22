@@ -18,7 +18,6 @@
             first: "bg-amber-100 text-amber-700",
         };
         const seatsInPattern = (pattern) => pattern.split("").filter(ch => ch !== " ").length;
-        const computedTotal = planeType.layout.reduce((sum, section) => sum + section.rows * seatsInPattern(section.seatPattern), 0);
     %>
         <section class="flex flex-col md:flex-row items-start w-full">
             <aside
@@ -123,12 +122,8 @@
                     <div class="mt-5 bg-[#f7f7f7] rounded-xl">
                         <div class="border-b py-5 w-full border-[#d3d2d2] px-5 flex flex-wrap gap-3 justify-between items-center">
                             <h3 class="text-left font-medium text-lg">Cabin Sections</h3>
-                            <span
-                                class="text-sm <%= computedTotal===(planeType.totalSeats || 0) ? 'text-black/50' : 'text-red-600 font-medium' %>">
-                                <%= computedTotal %> seats configured
-                                    <% if (planeType.totalSeats) { %>
-                                        (<%= planeType.totalSeats %> expected)
-                                        <% } %>
+                            <span class="text-sm text-black/50">
+                                <%= planeType.totalSeats %> seats total
                             </span>
                         </div>
 

@@ -8,7 +8,6 @@ router.post("/add", async (req, res) => {
             name: req.body.name,
             code: req.body.code,
             manufacturer: req.body.manufacturer,
-            totalSeats: req.body.totalSeats,
             image: req.body.image,
         })
         res.redirect("/admin/plane-types-management")

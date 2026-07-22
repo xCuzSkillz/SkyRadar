@@ -95,11 +95,15 @@
                                 class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
                         </div>
                         <div class="flex flex-col w-full gap-1">
-                            <label for="totalSeats"
-                                class="block text-sm font-medium text-black mb-2">Total Seats</label>
-                            <input id="totalSeats" value="<%= planeType.totalSeats %>" placeholder="525"
-                                name="totalSeats" type="number" min="0"
-                                class="block w-full rounded-md bg-[#fafafa] placeholder:text-black/30 ring-2 ring-[#e9e8e8] focus:ring-[#d3d2d2] px-3 py-2.5 text-black focus:outline-none focus:ring-2 sm:text-sm">
+                            <label class="block text-sm font-medium text-black mb-2">Total Seats</label>
+                            <div
+                                class="flex items-center justify-between h-[39px] rounded-md bg-[#fafafa] ring-2 ring-[#e9e8e8] px-3 text-black text-sm">
+                                <span>
+                                    <%= planeType.totalSeats %> (from configuration)
+                                </span>
+                                <a href="/admin/plane-types-management-configure/<%= planeType._id %>"
+                                    class="text-[#4d53ff] font-medium hover:underline">Edit</a>
+                            </div>
                         </div>
                         <div class="flex flex-col w-full gap-1 sm:col-span-2 lg:col-span-2">
                             <label for="image" class="block text-sm font-medium text-black mb-2">Image URL</label>

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 
+const seatsInPattern = (pattern) => pattern.split("").filter(ch => ch !== " ").length
+
 const CabinSectionSchema = new mongoose.Schema({
     class: {
         type: String,
@@ -29,14 +31,15 @@ const PlaneTypeSchema = new mongoose.Schema({
     manufacturer: {
         type: String,
     },
-    totalSeats: {
-        type: Number,
-    },
     image: {
         type: String,
     },
     layout: [CabinSectionSchema],
 }, { timestamps: true })
+
+PlaneTypeSchema.virtual("totalSeats").get(function () {
+    return this.layout.reduce((sum, section) => sum + section.rows * seatsInPattern(section.seatPattern), 0)
+})
 
 const PlaneType = mongoose.model("PlaneType", PlaneTypeSchema)
 
