@@ -3,10 +3,19 @@ const Airline = require("../models/Airline");
 const Flight = require("../models/Flight");
 const PromoCode = require("../models/PromoCode");
 const PlaneType = require("../models/PlaneType");
+const Booking = require("../models/Booking");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    res.render("admin/index.ejs")
+    const [airlinesCount, flightsCount, planeTypesCount, promocodesCount, bookingsCount] = await Promise.all([
+        Airline.countDocuments(),
+        Flight.countDocuments(),
+        PlaneType.countDocuments(),
+        PromoCode.countDocuments(),
+        Booking.countDocuments(),
+    ])
+
+    res.render("admin/index.ejs", { airlinesCount, flightsCount, planeTypesCount, promocodesCount, bookingsCount })
 })
 
 router.get("/airlines-management", async (req, res) => {

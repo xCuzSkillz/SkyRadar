@@ -9,9 +9,9 @@ _Add screenshots of your search page, results/comparison page, seat selection, a
 
 Example:
 ```
-![Search Page](./screenshots/search.png)
-![Results Comparison](./screenshots/results.png)
-![Seat Selection](./screenshots/seats.png)
+![Home Page](https://i.imgur.com/XnNecjf.png)
+![Booking Page](https://i.imgur.com/PZolDQv.png)
+![Seats Configuration](https://i.imgur.com/dZSRef6.png)
 ![Booking Confirmation](./screenshots/confirmation.png)
 ```
 
@@ -21,12 +21,12 @@ Example:
 3. JavaScript
 4. MongoDB & Mongoose
 5. Node.js
-6. CSS
+6. Tailwind CSS
+7. CSS
 
 ## Getting Started
-- [Planning Materials (Trello/Wireframes)](#) <!-- add your link here -->
-- [Deployed App](#) <!-- add your deployed link here -->
-- [GitHub Repo](#) <!-- add your repo link here -->
+- [Deployed App](https://skyradar-2oyj.onrender.com/) <!-- add your deployed link here -->
+- [GitHub Repo](https://github.com/xCuzSkillz/SkyRadar) <!-- add your repo link here -->
 
 ## Installation
 1. Clone the repo:

@@ -70,6 +70,32 @@
                             <%= user.lastName%> Welcome Back 👋</h2>
                     <p class="text-[17px] text-black/70">Here's the latest updates overall flights bookings</p>
                 </div>
+
+                <%
+                    const cards = [
+                        { label: "Airlines", value: airlinesCount, icon: "hgi-airplane-02", href: "/admin/airlines-management" },
+                        { label: "Flights", value: flightsCount, icon: "hgi-airplane-take-off-01", href: "/admin/flights-management" },
+                        { label: "Plane Types", value: planeTypesCount, icon: "hgi-plane", href: "/admin/plane-types-management" },
+                        { label: "Promo Codes", value: promocodesCount, icon: "hgi-coupon-01", href: "/admin/promocode-management" },
+                        { label: "Bookings", value: bookingsCount, icon: "hgi-ticket-01", href: "/bookings" },
+                    ];
+                %>
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <% cards.forEach(card=> { %>
+                            <a href="<%= card.href %>"
+                                class="bg-[#fafafa] rounded-2xl border border-[#e9e8e8] p-5 flex flex-col gap-3">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm font-medium text-black/50">
+                                        <%= card.label %>
+                                    </p>
+                                    <i class="hgi hgi-stroke hgi-rounded <%= card.icon %> text-lg text-black/30"></i>
+                                </div>
+                                <p class="text-3xl font-bold text-black">
+                                    <%= card.value %>
+                                </p>
+                            </a>
+                            <% }); %>
+                    </div>
             </div>
         </div>
     </section>
